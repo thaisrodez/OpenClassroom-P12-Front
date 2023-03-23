@@ -5,6 +5,9 @@ const StatArticle = styled.article`
   display: flex;
   align-items: center;
   gap: 24px;
+  background-color: #fbfbfb;
+  padding: 32px;
+  border-radius: 5px;
 `;
 
 const StatImage = styled.img`

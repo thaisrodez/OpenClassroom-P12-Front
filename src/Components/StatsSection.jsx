@@ -9,7 +9,7 @@ import Stat from './Stat';
 const StatsContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 40px;
 `;
 
 function StatsSection() {
