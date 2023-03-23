@@ -8,7 +8,9 @@ const Main = styled.main`
 `;
 
 const InfosDiv = styled.div`
+  margin: 0px 110px;
   display: flex;
+  gap: 32px;
 `;
 
 function DashBoard() {

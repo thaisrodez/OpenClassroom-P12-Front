@@ -1,5 +1,11 @@
+import DailyActivities from './DailyActivities';
+
 function GraphSection() {
-  return <p>graphs</p>;
+  return (
+    <div>
+      <DailyActivities />
+    </div>
+  );
 }
 
 export default GraphSection;
