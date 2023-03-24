@@ -10,10 +10,11 @@ import {
   Legend,
 } from 'recharts';
 import styled from 'styled-components';
-
 const BarChartBackground = styled.div`
   background-color: #fbfbfb;
   padding: 20px 30px 20px 40px;
+  margin-bottom: 32px;
+  border-radius: 5px;
 `;
 
 const TooltipContainer = styled.div`
@@ -30,6 +31,13 @@ const LegendText = styled.span`
   color: #74798c;
   margin-left: 8px;
 `;
+
+const data = (sessions) => {
+  return sessions.map((session) => ({
+    ...session,
+    day: session.day.substring(session.day.length - 1),
+  }));
+};
 
 function DailyActivities() {
   const CustomTooltip = ({ active, payload }) => {
@@ -57,7 +65,7 @@ function DailyActivities() {
   return (
     <BarChartBackground>
       <h4>Activité quotidienne</h4>
-      <BarChart width={750} height={180} data={userActivity.sessions}>
+      <BarChart width={750} height={220} data={data(userActivity.sessions)}>
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <XAxis dataKey="day" tickLine={false} />
         <YAxis
@@ -84,8 +92,20 @@ function DailyActivities() {
           formatter={renderColorfulLegendText}
           wrapperStyle={{ top: '-40px' }}
         />
-        <Bar dataKey="kilogram" yAxisId="right" fill="#282D30" barSize={7} />
-        <Bar dataKey="calories" yAxisId="left" fill="#E60000" barSize={7} />
+        <Bar
+          dataKey="kilogram"
+          yAxisId="right"
+          fill="#282D30"
+          barSize={7}
+          radius={[3, 3, 0, 0]}
+        />
+        <Bar
+          dataKey="calories"
+          yAxisId="left"
+          fill="#E60000"
+          barSize={7}
+          radius={[3, 3, 0, 0]}
+        />
       </BarChart>
     </BarChartBackground>
   );
