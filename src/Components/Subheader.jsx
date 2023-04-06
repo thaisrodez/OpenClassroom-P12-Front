@@ -8,6 +8,7 @@ const SubheaderContainer = styled.section`
 const Title = styled.h1`
   color: #000000;
   font-size: 48px;
+  margin-top: 0;
 `;
 
 const UserName = styled.span`
