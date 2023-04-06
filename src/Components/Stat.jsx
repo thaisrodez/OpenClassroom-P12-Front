@@ -42,11 +42,15 @@ function Stat({ icon, count, type }) {
         return '';
     }
   };
+
   return (
     <StatArticle>
       <StatImage src={icon} alt={type} />
       <div>
-        <StatCount>{count}</StatCount>
+        <StatCount>
+          {count}
+          {type === 'calories' ? 'kCal' : 'g'}
+        </StatCount>
         <StatType>{getTitle()}</StatType>
       </div>
     </StatArticle>
