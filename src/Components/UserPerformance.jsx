@@ -37,18 +37,16 @@ const UserPerformanceContainer = styled.div`
 function UserPerformance() {
   function customTick({ payload, x, y, stroke, textAnchor, radius }) {
     return (
-      <g className="recharts-layer recharts-polar-angle-axis-tick">
+      <g>
         <text
           radius={radius}
           stroke={stroke}
           x={x}
           y={y}
-          className="recharts-text recharts-polar-angle-axis-tick-value"
           textAnchor={textAnchor}
+          style={{ fill: 'white', fontSize: '12px' }}
         >
-          <tspan x={x} dy="0em" style={{ fill: 'white', fontSize: '12px' }}>
-            {payload.value}
-          </tspan>
+          {payload.value}
         </text>
       </g>
     );
@@ -58,9 +56,11 @@ function UserPerformance() {
     <UserPerformanceContainer>
       <RadarChart
         width={258}
-        height={243}
+        height={263}
         data={data(userPerformance)}
         margin={{ top: 10, right: 24, bottom: 10, left: 24 }}
+        startAngle={30}
+        endAngle={390}
       >
         <PolarGrid radialLines={false} />
         <PolarAngleAxis dataKey="subject" tick={customTick} />
