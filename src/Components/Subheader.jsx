@@ -1,5 +1,7 @@
-import { user } from '../mockedDatas/mockedData.js';
 import styled from 'styled-components';
+import { useEffect } from 'react';
+import api from '../service/api.js';
+import { useState } from 'react';
 
 const SubheaderContainer = styled.section`
   padding: 68px 108px;
@@ -21,10 +23,20 @@ const Subtitle = styled.p`
 `;
 
 function Subheader() {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function getUser() {
+      const { data } = await api.get('/12');
+      setUser(data.data);
+    }
+    getUser();
+  }, []);
+
   return (
     <SubheaderContainer>
       <Title>
-        Bonjour <UserName>{user.userInfos.firstName}</UserName>
+        Bonjour <UserName>{user ? user.userInfos.firstName : ''}</UserName>
       </Title>
       <Subtitle>
         Félicitation ! Vous avez explosé vos objectifs hier 👏
