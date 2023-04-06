@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
-import api from '../service/api.js';
+import { useApi } from '../service/api.js';
 import { useState } from 'react';
 
 const SubheaderContainer = styled.section`
@@ -25,18 +25,22 @@ const Subtitle = styled.p`
 function Subheader() {
   const [user, setUser] = useState();
 
+  const { data, isLoading } = useApi({
+    method: 'GET',
+    url: '/12',
+  });
+
   useEffect(() => {
-    async function getUser() {
-      const { data } = await api.get('/12');
+    if (data) {
       setUser(data.data);
     }
-    getUser();
-  }, []);
+  }, [data]);
 
   return (
     <SubheaderContainer>
       <Title>
-        Bonjour <UserName>{user ? user.userInfos.firstName : ''}</UserName>
+        Bonjour{' '}
+        <UserName>{!isLoading ? user.userInfos.firstName : ''}</UserName>
       </Title>
       <Subtitle>
         Félicitation ! Vous avez explosé vos objectifs hier 👏

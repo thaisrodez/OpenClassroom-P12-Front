@@ -1,7 +1,28 @@
-import Axios from 'axios';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-const api = Axios.create({
-  baseURL: 'http://localhost:3000/user',
-});
+axios.defaults.baseURL = 'http://localhost:3000/user';
 
-export default api;
+export const useApi = (axiosParams) => {
+  const [data, setData] = useState(undefined);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.request(axiosParams);
+      setData(response.data);
+    } catch (error) {
+      setError(error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return { data, error, isLoading };
+};
