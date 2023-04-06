@@ -22,9 +22,6 @@ const TooltipContainer = styled.div`
   color: white;
   padding: 4px 12px;
   text-align: center;
-  &:focus-visible {
-    outline: 0px;
-  }
 `;
 
 const LegendText = styled.span`
@@ -83,7 +80,10 @@ function DailyActivities() {
           dataKey="calories"
           domain={[0, 'dataMax + 20']}
         />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          content={<CustomTooltip />}
+          wrapperStyle={{ outline: 'none' }}
+        />
         <Legend
           iconType="circle"
           iconSize={10}
