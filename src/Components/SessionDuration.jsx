@@ -1,7 +1,8 @@
-/* eslint-disable react/prop-types */
-import { userAverageSession } from '../mockedDatas/mockedData';
 import { LineChart, XAxis, Tooltip, Line, Rectangle } from 'recharts';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useApi } from '../service/api';
 
 const SessionDurationContainer = styled.div`
   background-color: #ff0000;
@@ -24,25 +25,42 @@ const TooltipContainer = styled.div`
   text-align: center;
 `;
 
-const getDay = (number) => {
-  const days = {
-    1: 'L',
-    2: 'M',
-    3: 'M',
-    4: 'J',
-    5: 'V',
-    6: 'S',
-    7: 'D',
-  };
-  return days[number];
-};
-
-const getData = (sessions) => {
-  return sessions.map((session) => ({ ...session, day: getDay(session.day) }));
-};
-
 function SessionDuration() {
-  const CustomTooltip = ({ active, payload }) => {
+  const params = useParams();
+  const [sessions, setSessions] = useState([]);
+
+  const { data, error, isLoading } = useApi({
+    method: 'GET',
+    url: `/${params.id}/average-sessions`,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setSessions(data.data.sessions);
+    }
+  }, [data]);
+
+  const getDay = (number) => {
+    const days = {
+      1: 'L',
+      2: 'M',
+      3: 'M',
+      4: 'J',
+      5: 'V',
+      6: 'S',
+      7: 'D',
+    };
+    return days[number];
+  };
+
+  const formatData = (sessions) => {
+    return sessions.map((session) => ({
+      ...session,
+      day: getDay(session.day),
+    }));
+  };
+
+  const customTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
         <TooltipContainer>
@@ -54,7 +72,7 @@ function SessionDuration() {
     return null;
   };
 
-  const CustomizedCursor = ({ points, width }) => {
+  const customizedCursor = ({ points, width }) => {
     const { x, y } = points[0];
     return (
       <Rectangle
@@ -67,7 +85,7 @@ function SessionDuration() {
     );
   };
 
-  const CustomizeAxisTick = ({ x, y, payload }) => {
+  const customizeAxisTick = ({ x, y, payload }) => {
     return (
       <g transform={`translate(${x},${y})`}>
         <text
@@ -86,41 +104,43 @@ function SessionDuration() {
   return (
     <SessionDurationContainer>
       <SessionDurationTitle>Durée moyenne des sessions</SessionDurationTitle>
-      <LineChart
-        width={258}
-        height={263}
-        data={getData(userAverageSession.sessions)}
-        margin={{ top: -5, right: 0, left: 0, bottom: -5 }}
-      >
-        <defs>
-          <linearGradient id="linear" x1="0" x2="1">
-            <stop offset="40%" stopColor="#FFFFFF" stopOpacity={0.4} />
-            <stop offset="95%" stopColor="#FFFFFF" stopOpacity={1} />
-          </linearGradient>
-        </defs>
-        <XAxis
-          dataKey="day"
-          padding={{ left: 10, right: 10 }}
-          height={40}
-          tickLine={false}
-          axisLine={false}
-          tick={<CustomizeAxisTick />}
-        />
-        <Tooltip
-          content={<CustomTooltip />}
-          wrapperStyle={{ outline: 'none' }}
-          cursor={<CustomizedCursor />}
-        />
-        <Line
-          type="monotone"
-          dataKey="sessionLength"
-          dot={false}
-          activeDot={{ stroke: 'rgba(255, 255, 255, 0.2)', strokeWidth: 10 }}
-          axisLine={false}
-          stroke="url(#linear)"
-          strokeWidth={2}
-        />
-      </LineChart>
+      {!isLoading && sessions && (
+        <LineChart
+          width={258}
+          height={263}
+          data={formatData(sessions)}
+          margin={{ top: -5, right: 0, left: 0, bottom: -5 }}
+        >
+          <defs>
+            <linearGradient id="linear" x1="0" x2="1">
+              <stop offset="40%" stopColor="#FFFFFF" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#FFFFFF" stopOpacity={1} />
+            </linearGradient>
+          </defs>
+          <XAxis
+            dataKey="day"
+            padding={{ left: 10, right: 10 }}
+            height={40}
+            tickLine={false}
+            axisLine={false}
+            tick={customizeAxisTick}
+          />
+          <Tooltip
+            content={customTooltip}
+            wrapperStyle={{ outline: 'none' }}
+            cursor={customizedCursor}
+          />
+          <Line
+            type="monotone"
+            dataKey="sessionLength"
+            dot={false}
+            activeDot={{ stroke: 'rgba(255, 255, 255, 0.2)', strokeWidth: 10 }}
+            axisLine={false}
+            stroke="url(#linear)"
+            strokeWidth={2}
+          />
+        </LineChart>
+      )}
     </SessionDurationContainer>
   );
 }
