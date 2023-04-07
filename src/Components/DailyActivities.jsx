@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { userActivity } from '../mockedDatas/mockedData';
 import {
   BarChart,
@@ -10,6 +9,10 @@ import {
   Legend,
 } from 'recharts';
 import styled from 'styled-components';
+import { useApi } from '../service/api';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
 const BarChartBackground = styled.div`
   background-color: #fbfbfb;
   padding: 20px 30px 20px 40px;
@@ -29,15 +32,29 @@ const LegendText = styled.span`
   margin-left: 8px;
 `;
 
-const data = (sessions) => {
-  return sessions.map((session) => ({
-    ...session,
-    day: session.day.substring(session.day.length - 1),
-  }));
-};
-
 function DailyActivities() {
-  const CustomTooltip = ({ active, payload }) => {
+  const params = useParams();
+  const [sessions, setSessions] = useState([]);
+
+  const { data, error, isLoading } = useApi({
+    method: 'GET',
+    url: `/${params.id}/activity`,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setSessions(data.data.sessions);
+    }
+  }, [data]);
+
+  const format = (sessions) => {
+    return sessions.map((session) => ({
+      ...session,
+      day: session.day.substring(session.day.length - 1),
+    }));
+  };
+
+  const customTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
         <TooltipContainer>
@@ -46,7 +63,6 @@ function DailyActivities() {
         </TooltipContainer>
       );
     }
-
     return null;
   };
 
@@ -62,51 +78,50 @@ function DailyActivities() {
   return (
     <BarChartBackground>
       <h4>Activité quotidienne</h4>
-      <BarChart width={750} height={220} data={data(userActivity.sessions)}>
-        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-        <XAxis dataKey="day" tickLine={false} />
-        <YAxis
-          yAxisId="right"
-          dataKey="kilogram"
-          orientation="right"
-          axisLine={false}
-          tickLine={false}
-          domain={['dataMin -10', 'dataMax + 10']}
-        />
-        <YAxis
-          hide={true}
-          yAxisId="left"
-          orientation="left"
-          dataKey="calories"
-          domain={[0, 'dataMax + 20']}
-        />
-        <Tooltip
-          content={<CustomTooltip />}
-          wrapperStyle={{ outline: 'none' }}
-        />
-        <Legend
-          iconType="circle"
-          iconSize={10}
-          verticalAlign="top"
-          align="right"
-          formatter={renderColorfulLegendText}
-          wrapperStyle={{ top: '-40px' }}
-        />
-        <Bar
-          dataKey="kilogram"
-          yAxisId="right"
-          fill="#282D30"
-          barSize={7}
-          radius={[3, 3, 0, 0]}
-        />
-        <Bar
-          dataKey="calories"
-          yAxisId="left"
-          fill="#E60000"
-          barSize={7}
-          radius={[3, 3, 0, 0]}
-        />
-      </BarChart>
+      {!isLoading && sessions && (
+        <BarChart width={750} height={220} data={format(sessions)}>
+          <CartesianGrid vertical={false} strokeDasharray="3 3" />
+          <XAxis dataKey="day" tickLine={false} />
+          <YAxis
+            yAxisId="right"
+            dataKey="kilogram"
+            orientation="right"
+            axisLine={false}
+            tickLine={false}
+            domain={['dataMin -10', 'dataMax + 10']}
+          />
+          <YAxis
+            hide={true}
+            yAxisId="left"
+            orientation="left"
+            dataKey="calories"
+            domain={[0, 'dataMax + 20']}
+          />
+          <Tooltip content={customTooltip} wrapperStyle={{ outline: 'none' }} />
+          <Legend
+            iconType="circle"
+            iconSize={10}
+            verticalAlign="top"
+            align="right"
+            formatter={renderColorfulLegendText}
+            wrapperStyle={{ top: '-40px' }}
+          />
+          <Bar
+            dataKey="kilogram"
+            yAxisId="right"
+            fill="#282D30"
+            barSize={7}
+            radius={[3, 3, 0, 0]}
+          />
+          <Bar
+            dataKey="calories"
+            yAxisId="left"
+            fill="#E60000"
+            barSize={7}
+            radius={[3, 3, 0, 0]}
+          />
+        </BarChart>
+      )}
     </BarChartBackground>
   );
 }
