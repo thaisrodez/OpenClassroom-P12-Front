@@ -1,18 +1,8 @@
 import { Pie, PieChart, Legend } from 'recharts';
 import styled from 'styled-components';
-
-const data = [
-  {
-    name: 'score',
-    score: 12,
-    fill: '#ff0000',
-  },
-  {
-    name: 'full',
-    score: 88,
-    fill: '#fbfbfb',
-  },
-];
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useApi } from '../service/api';
 
 const data2 = [
   {
@@ -56,6 +46,35 @@ const LegendPercent = styled.span`
 `;
 
 function UserScore() {
+  const params = useParams();
+  const [score, setScore] = useState();
+
+  const { data, error, isLoading } = useApi({
+    method: 'GET',
+    url: `/${params.id}`,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setScore(data.data.score);
+    }
+  }, [data]);
+
+  const formatData = (score) => {
+    return [
+      {
+        name: 'score',
+        value: score * 100,
+        fill: '#ff0000',
+      },
+      {
+        name: 'full',
+        value: 100 - score * 100,
+        fill: '#fbfbfb',
+      },
+    ];
+  };
+
   const renderLegendText = ({ payload }) => {
     const legend = payload.find(({ value }) => value === 'score');
     if (legend) {
@@ -72,34 +91,36 @@ function UserScore() {
   return (
     <UserScoreContainer>
       <ScoreTitle>Score</ScoreTitle>
-      <PieChart width={250} height={250}>
-        <Pie
-          data={data2}
-          dataKey="value"
-          cx="50%"
-          cy="50%"
-          outerRadius={100}
-          fill="#FFF"
-        />
-        <Pie
-          data={data}
-          dataKey="score"
-          cx="50%"
-          cy="50%"
-          cornerRadius={40}
-          innerRadius={88}
-          outerRadius={100}
-          startAngle={90}
-          endAngle={450}
-        />
-        <Legend
-          iconSize={0}
-          verticalAlign="center"
-          align="center"
-          content={renderLegendText}
-          wrapperStyle={{ top: '100px', left: '10px' }}
-        />
-      </PieChart>
+      {!isLoading && score && (
+        <PieChart width={250} height={250}>
+          <Pie
+            data={data2}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            fill="#FFF"
+          />
+          <Pie
+            data={formatData(score)}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            cornerRadius={40}
+            innerRadius={88}
+            outerRadius={100}
+            startAngle={90}
+            endAngle={450}
+          />
+          <Legend
+            iconSize={0}
+            verticalAlign="center"
+            align="center"
+            content={renderLegendText}
+            wrapperStyle={{ top: '100px', left: '10px' }}
+          />
+        </PieChart>
+      )}
     </UserScoreContainer>
   );
 }
