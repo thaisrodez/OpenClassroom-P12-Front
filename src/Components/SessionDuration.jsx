@@ -1,8 +1,9 @@
-import { LineChart, XAxis, Tooltip, Line, Rectangle } from 'recharts';
+import { LineChart, XAxis, YAxis, Tooltip, Line, Rectangle } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useApi } from '../service/api';
+import PropTypes from 'prop-types';
 
 const SessionDurationContainer = styled.div`
   background-color: #ff0000;
@@ -24,6 +25,21 @@ const TooltipContainer = styled.div`
   padding: 12px 8px;
   text-align: center;
 `;
+
+function CustomizedCursor({ points, width }) {
+  const { x, y } = points[0];
+  return (
+    <g>
+      <Rectangle
+        fill="rgba(0, 0, 0, 0.1)"
+        x={x}
+        y={y}
+        width={width}
+        height={270}
+      />
+    </g>
+  );
+}
 
 function SessionDuration() {
   const params = useParams();
@@ -68,21 +84,7 @@ function SessionDuration() {
         </TooltipContainer>
       );
     }
-
     return null;
-  };
-
-  const customizedCursor = ({ points, width }) => {
-    const { x, y } = points[0];
-    return (
-      <Rectangle
-        fill="rgba(0, 0, 0, 0.1)"
-        x={x}
-        y={y}
-        width={width}
-        height={263}
-      />
-    );
   };
 
   const customizeAxisTick = ({ x, y, payload }) => {
@@ -125,13 +127,19 @@ function SessionDuration() {
             axisLine={false}
             tick={customizeAxisTick}
           />
+          <YAxis
+            hide={true}
+            dataKey="sessionLength"
+            domain={['dataMin - 10', 'dataMax + 20']}
+            allowDataOverflow={false}
+          />
           <Tooltip
             content={customTooltip}
             wrapperStyle={{ outline: 'none' }}
-            cursor={customizedCursor}
+            cursor={<CustomizedCursor />}
           />
           <Line
-            type="monotone"
+            type="natural"
             dataKey="sessionLength"
             dot={false}
             activeDot={{ stroke: 'rgba(255, 255, 255, 0.2)', strokeWidth: 10 }}
@@ -145,4 +153,8 @@ function SessionDuration() {
   );
 }
 
+CustomizedCursor.propTypes = {
+  points: PropTypes.array,
+  width: PropTypes.number,
+};
 export default SessionDuration;
