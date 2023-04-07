@@ -1,9 +1,15 @@
+/**
+ * Component showing user score.
+ *
+ * @component
+ */
 import { Pie, PieChart, Legend } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useApi } from '../service/api';
+import { useApi } from '../../service/api';
 
+// data for background pie
 const data2 = [
   {
     name: 'test',
@@ -61,6 +67,7 @@ function UserScore() {
   }, [data]);
 
   const formatData = (score) => {
+    // need to render 2 pies to display score in %
     return [
       {
         name: 'score',

@@ -1,3 +1,9 @@
+/**
+ * Send custom api request using axios
+ * @param { Object.<method: String, url: String, [body]: Object> } axiosParams
+ * @return { Object.<data: Object, error: String, isLoading: Boolean> }
+ */
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 

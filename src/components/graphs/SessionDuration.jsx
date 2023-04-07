@@ -1,8 +1,13 @@
+/**
+ * Component showing user sessions duration graph.
+ *
+ * @component
+ */
 import { LineChart, XAxis, YAxis, Tooltip, Line, Rectangle } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useApi } from '../service/api';
+import { useApi } from '../../service/api';
 import PropTypes from 'prop-types';
 
 const SessionDurationContainer = styled.div`
@@ -87,7 +92,7 @@ function SessionDuration() {
     return null;
   };
 
-  const customizeAxisTick = ({ x, y, payload }) => {
+  const customAxisTick = ({ x, y, payload }) => {
     return (
       <g transform={`translate(${x},${y})`}>
         <text
@@ -125,7 +130,7 @@ function SessionDuration() {
             height={40}
             tickLine={false}
             axisLine={false}
-            tick={customizeAxisTick}
+            tick={customAxisTick}
           />
           <YAxis
             hide={true}

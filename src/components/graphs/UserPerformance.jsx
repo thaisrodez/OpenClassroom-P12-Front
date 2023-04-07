@@ -1,8 +1,13 @@
+/**
+ * Component showing user performance graph.
+ *
+ * @component
+ */
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useApi } from '../service/api';
+import { useApi } from '../../service/api';
 
 const translateKind = (kind) => {
   switch (kind) {

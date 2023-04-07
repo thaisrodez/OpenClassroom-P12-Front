@@ -1,10 +1,15 @@
-import caloriesIcon from '../assets/calories-icon.png';
-import carbsIcon from '../assets/carbs-icon.png';
-import fatIcon from '../assets/fat-icon.png';
-import proteinIcon from '../assets/protein-icon.png';
+/**
+ * Component layout for stats card
+ *
+ * @component
+ */
+import caloriesIcon from '../../assets/calories-icon.png';
+import carbsIcon from '../../assets/carbs-icon.png';
+import fatIcon from '../../assets/fat-icon.png';
+import proteinIcon from '../../assets/protein-icon.png';
 import styled from 'styled-components';
 import Stat from './Stat';
-import { useApi } from '../service/api.js';
+import { useApi } from '../../service/api.js';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -28,6 +33,7 @@ function StatsSection() {
       setkeyData(data.data.keyData);
     }
   }, [data]);
+
   return (
     <StatsContainer>
       {!isLoading && keyData && (

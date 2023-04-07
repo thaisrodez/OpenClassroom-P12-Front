@@ -1,5 +1,10 @@
+/**
+ * Component showing user main information.
+ *
+ * @component
+ */
 import styled from 'styled-components';
-import { useApi } from '../service/api.js';
+import { useApi } from '../../service/api.js';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 

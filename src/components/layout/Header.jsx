@@ -1,5 +1,10 @@
+/**
+ * Component for Header and horizontal navigation.
+ *
+ * @component
+ */
 import styled from 'styled-components';
-import logo from '../assets/SportSee-logo.png';
+import logo from '../../assets/SportSee-logo.png';
 
 const HeaderContainer = styled.div`
   position: absolute;

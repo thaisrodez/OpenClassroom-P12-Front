@@ -1,8 +1,13 @@
+/**
+ * Component showing vertical menu.
+ *
+ * @component
+ */
 import styled from 'styled-components';
-import bikeIcon from '../assets/bike-icon.png';
-import yogaIcon from '../assets/yoga-icon.png';
-import swimIcon from '../assets/swim-icon.png';
-import weightIcon from '../assets/weight-icon.png';
+import bikeIcon from '../../assets/bike-icon.png';
+import yogaIcon from '../../assets/yoga-icon.png';
+import swimIcon from '../../assets/swim-icon.png';
+import weightIcon from '../../assets/weight-icon.png';
 
 const MenuContainer = styled.div`
   position: absolute;

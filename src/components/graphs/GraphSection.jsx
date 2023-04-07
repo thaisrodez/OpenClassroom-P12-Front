@@ -1,3 +1,9 @@
+/**
+ * Component for main layout of graphs.
+ *
+ * @component
+ */
+
 import DailyActivities from './DailyActivities';
 import styled from 'styled-components';
 import SessionDuration from './SessionDuration';

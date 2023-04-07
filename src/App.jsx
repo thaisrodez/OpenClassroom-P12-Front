@@ -1,8 +1,13 @@
+/**
+ * App main page
+ *
+ * @component
+ */
 import React from 'react';
-import Header from './Components/Header';
+import Header from './components/layout/Header';
 import styled from 'styled-components';
-import Menu from './Components/Menu';
-import DashBoard from './Components/Dashboard';
+import Menu from './components/layout/Menu';
+import DashBoard from './components/layout/Dashboard';
 
 const Body = styled.div`
   font-family: 'Roboto', sans-serif;

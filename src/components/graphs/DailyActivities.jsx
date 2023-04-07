@@ -1,4 +1,8 @@
-import { userActivity } from '../mockedDatas/mockedData';
+/**
+ * Component showing user daily activities graph.
+ *
+ * @component
+ */
 import {
   BarChart,
   XAxis,
@@ -9,7 +13,7 @@ import {
   Legend,
 } from 'recharts';
 import styled from 'styled-components';
-import { useApi } from '../service/api';
+import { useApi } from '../../service/api';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -47,7 +51,7 @@ function DailyActivities() {
     }
   }, [data]);
 
-  const format = (sessions) => {
+  const formatSessions = (sessions) => {
     return sessions.map((session) => ({
       ...session,
       day: session.day.substring(session.day.length - 1),
@@ -66,7 +70,7 @@ function DailyActivities() {
     return null;
   };
 
-  const renderColorfulLegendText = (value, entry) => {
+  const renderLegendText = (value, entry) => {
     const { dataKey } = entry;
     return (
       <LegendText>
@@ -79,7 +83,7 @@ function DailyActivities() {
     <BarChartBackground>
       <h4>Activité quotidienne</h4>
       {!isLoading && sessions && (
-        <BarChart width={750} height={220} data={format(sessions)}>
+        <BarChart width={750} height={220} data={formatSessions(sessions)}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis dataKey="day" tickLine={false} />
           <YAxis
@@ -103,7 +107,7 @@ function DailyActivities() {
             iconSize={10}
             verticalAlign="top"
             align="right"
-            formatter={renderColorfulLegendText}
+            formatter={renderLegendText}
             wrapperStyle={{ top: '-40px' }}
           />
           <Bar
