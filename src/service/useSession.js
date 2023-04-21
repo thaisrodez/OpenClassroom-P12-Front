@@ -1,5 +1,5 @@
 /**
- * Get activity Api data formatted
+ * Get session Api data formatted
  * @param { number } id
  * @return { Object.<activity: Object[], isLoading: Boolean> }
  */

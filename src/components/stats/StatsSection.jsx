@@ -3,10 +3,6 @@
  *
  * @component
  */
-import caloriesIcon from '../../assets/calories-icon.png';
-import carbsIcon from '../../assets/carbs-icon.png';
-import fatIcon from '../../assets/fat-icon.png';
-import proteinIcon from '../../assets/protein-icon.png';
 import styled from 'styled-components';
 import Stat from './Stat';
 import { useState, useEffect } from 'react';

@@ -21,7 +21,7 @@ export class User {
 
   /**
    * Get user main infos
-   * @returns {Object.<firstName: String, lastName: String, age:Number>} The sessions with the days as a key
+   * @returns {Object.<firstName: String, lastName: String, age:Number>} The user main infos
    */
   userInfos() {
     return this.userIfos;
@@ -29,7 +29,7 @@ export class User {
 
   /**
    * Get score data for Pie Chart
-   * @returns {Object[]} The sessions with the days as a key
+   * @returns {Object[]} The score data formated for pie chart
    */
   formatScore() {
     // need to render 2 pies to display score in %
@@ -48,8 +48,8 @@ export class User {
   }
 
   /**
-   * Get kay data title
-   * @returns {String} The sessions with the days as a key
+   * Get key data title
+   * @returns {String} The title of one key
    */
   getKeyDataTitle(type) {
     switch (type) {
@@ -68,7 +68,7 @@ export class User {
 
   /**
    * Get kay data icon
-   * @returns {String} The sessions with the days as a key
+   * @returns {String} The icon of one key data
    */
   getKeyDataIcon(type) {
     switch (type) {
@@ -87,7 +87,7 @@ export class User {
 
   /**
    * Get formated key datas
-   * @returns {Object[]} The sessions with the days as a key
+   * @returns {Object[]} The key data with display elements
    */
   formatKeyData() {
     const formattedKeyDatas = [];

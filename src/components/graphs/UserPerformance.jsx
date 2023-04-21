@@ -7,7 +7,6 @@ import { RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useApi } from '../../service/api';
 import { usePerformances } from '../../service/usePerformance';
 
 const UserPerformanceContainer = styled.div`

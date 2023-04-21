@@ -38,13 +38,13 @@ const LegendText = styled.span`
 
 function DailyActivities() {
   const params = useParams();
-  const [sessions, setSessions] = useState([]);
+  const [userActivity, setUserActivity] = useState([]);
 
   const { activity, isLoading } = useActivity(params.id);
 
   useEffect(() => {
     if (activity) {
-      setSessions(activity);
+      setUserActivity(activity);
     }
   }, [activity]);
 
@@ -72,8 +72,8 @@ function DailyActivities() {
   return (
     <BarChartBackground>
       <h4>Activité quotidienne</h4>
-      {!isLoading && sessions && (
-        <BarChart width={750} height={220} data={sessions}>
+      {!isLoading && userActivity && (
+        <BarChart width={750} height={220} data={userActivity}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis dataKey="day" tickLine={false} />
           <YAxis
