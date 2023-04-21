@@ -4,9 +4,9 @@
  * @component
  */
 import styled from 'styled-components';
-import { useApi } from '../../service/api.js';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useUser } from '../../service/useUser.js';
 
 const SubheaderContainer = styled.section`
   padding: 68px 108px;
@@ -31,24 +31,18 @@ function Subheader() {
   const params = useParams();
   const [user, setUser] = useState();
 
-  const { data, error, isLoading } = useApi({
-    method: 'GET',
-    url: `/${params.id}`,
-  });
+  const { userInfos, isLoading } = useUser(params.id);
 
   useEffect(() => {
-    if (data) {
-      setUser(data.data);
+    if (userInfos) {
+      setUser(userInfos);
     }
-  }, [data]);
+  }, [userInfos]);
 
   return (
     <SubheaderContainer>
       <Title>
-        Bonjour{' '}
-        <UserName>
-          {!isLoading && user ? user.userInfos.firstName : ''}
-        </UserName>
+        Bonjour <UserName>{!isLoading && user ? user.firstName : ''}</UserName>
       </Title>
       <Subtitle>
         Félicitation ! Vous avez explosé vos objectifs hier 👏

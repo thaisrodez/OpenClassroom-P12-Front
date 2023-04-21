@@ -7,7 +7,7 @@ import { Pie, PieChart, Legend } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useApi } from '../../service/api';
+import { useUser } from '../../service/useUser';
 
 // data for background pie
 const data2 = [
@@ -53,34 +53,15 @@ const LegendPercent = styled.span`
 
 function UserScore() {
   const params = useParams();
-  const [score, setScore] = useState();
+  const [userScore, setUserScore] = useState([]);
 
-  const { data, error, isLoading } = useApi({
-    method: 'GET',
-    url: `/${params.id}`,
-  });
+  const { score, isLoading } = useUser(params.id);
 
   useEffect(() => {
-    if (data) {
-      setScore(data.data.score);
+    if (score) {
+      setUserScore(score);
     }
-  }, [data]);
-
-  const formatData = (score) => {
-    // need to render 2 pies to display score in %
-    return [
-      {
-        name: 'score',
-        value: score * 100,
-        fill: '#ff0000',
-      },
-      {
-        name: 'full',
-        value: 100 - score * 100,
-        fill: '#fbfbfb',
-      },
-    ];
-  };
+  }, [score]);
 
   const renderLegendText = ({ payload }) => {
     const legend = payload.find(({ value }) => value === 'score');
@@ -109,7 +90,7 @@ function UserScore() {
             fill="#FFF"
           />
           <Pie
-            data={formatData(score)}
+            data={userScore}
             dataKey="value"
             cx="50%"
             cy="50%"

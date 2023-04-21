@@ -9,9 +9,9 @@ import fatIcon from '../../assets/fat-icon.png';
 import proteinIcon from '../../assets/protein-icon.png';
 import styled from 'styled-components';
 import Stat from './Stat';
-import { useApi } from '../../service/api.js';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useUser } from '../../service/useUser';
 
 const StatsContainer = styled.section`
   display: flex;
@@ -21,41 +21,29 @@ const StatsContainer = styled.section`
 
 function StatsSection() {
   const params = useParams();
-  const [keyData, setkeyData] = useState();
+  const [userKeyData, setUserKeyData] = useState();
 
-  const { data, error, isLoading } = useApi({
-    method: 'GET',
-    url: `/${params.id}`,
-  });
+  const { keyData, isLoading } = useUser(params.id);
 
   useEffect(() => {
-    if (data) {
-      setkeyData(data.data.keyData);
+    if (keyData) {
+      setUserKeyData(keyData);
     }
-  }, [data]);
+  }, [keyData]);
 
   return (
     <StatsContainer>
-      {!isLoading && keyData && (
-        <>
+      {!isLoading &&
+        userKeyData &&
+        userKeyData.map((data) => (
           <Stat
-            icon={caloriesIcon}
-            count={keyData.calorieCount}
-            type="calories"
+            key={data.title}
+            icon={data.icon}
+            count={data.count}
+            unit={data.unit}
+            title={data.title}
           />
-          <Stat
-            icon={proteinIcon}
-            count={keyData.proteinCount}
-            type="protein"
-          />
-          <Stat
-            icon={carbsIcon}
-            count={keyData.carbohydrateCount}
-            type="carbohydrate"
-          />
-          <Stat icon={fatIcon} count={keyData.lipidCount} type="lipid" />
-        </>
-      )}
+        ))}
     </StatsContainer>
   );
 }
