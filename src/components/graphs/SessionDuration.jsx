@@ -7,8 +7,8 @@ import { LineChart, XAxis, YAxis, Tooltip, Line, Rectangle } from 'recharts';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useApi } from '../../service/api';
 import PropTypes from 'prop-types';
+import { useSession } from '../../service/useSession';
 
 const SessionDurationContainer = styled.div`
   background-color: #ff0000;
@@ -48,38 +48,15 @@ function CustomizedCursor({ points, width }) {
 
 function SessionDuration() {
   const params = useParams();
-  const [sessions, setSessions] = useState([]);
+  const [userSessions, setUserSessions] = useState([]);
 
-  const { data, error, isLoading } = useApi({
-    method: 'GET',
-    url: `/${params.id}/average-sessions`,
-  });
+  const { sessions, isLoading } = useSession(params.id);
 
   useEffect(() => {
-    if (data) {
-      setSessions(data.data.sessions);
+    if (sessions) {
+      setUserSessions(sessions);
     }
-  }, [data]);
-
-  const getDay = (number) => {
-    const days = {
-      1: 'L',
-      2: 'M',
-      3: 'M',
-      4: 'J',
-      5: 'V',
-      6: 'S',
-      7: 'D',
-    };
-    return days[number];
-  };
-
-  const formatData = (sessions) => {
-    return sessions.map((session) => ({
-      ...session,
-      day: getDay(session.day),
-    }));
-  };
+  }, [sessions]);
 
   const customTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -111,11 +88,11 @@ function SessionDuration() {
   return (
     <SessionDurationContainer>
       <SessionDurationTitle>Durée moyenne des sessions</SessionDurationTitle>
-      {!isLoading && sessions && (
+      {!isLoading && userSessions && (
         <LineChart
           width={258}
           height={263}
-          data={formatData(sessions)}
+          data={userSessions}
           margin={{ top: -5, right: 0, left: 0, bottom: -5 }}
         >
           <defs>

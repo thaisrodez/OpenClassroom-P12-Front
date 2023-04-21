@@ -12,7 +12,7 @@ export class Activity {
 
   /**
    * Get formatted data for bar chart
-   * @returns {Object[]} The sessions with the days as a key
+   * @returns {Object[]} The activities with the days as a key
    */
   formatActivities() {
     return this.activities.map((activity) => ({
