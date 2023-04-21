@@ -13,7 +13,6 @@ import {
   Legend,
 } from 'recharts';
 import styled from 'styled-components';
-import { useApi } from '../../service/api';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useActivity } from '../../service/useActivity';

@@ -1,5 +1,5 @@
 /**
- * Get sessions Api data formatted
+ * Get activity Api data formatted
  * @param { number } id
  * @return { Object.<activity: Object[], isLoading: Boolean> }
  */
@@ -17,8 +17,8 @@ export const useActivity = (id) => {
 
   useEffect(() => {
     if (data) {
-      const sessionModel = new Activity(data.data.id, data.data.sessions);
-      const formattedActivities = sessionModel.formatActivities();
+      const activityModel = new Activity(data.data.id, data.data.sessions);
+      const formattedActivities = activityModel.formatActivities();
 
       setActivity(formattedActivities);
     }
