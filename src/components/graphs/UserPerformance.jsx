@@ -8,25 +8,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useApi } from '../../service/api';
-
-const translateKind = (kind) => {
-  switch (kind) {
-    case 'cardio':
-      return 'Cardio';
-    case 'energy':
-      return 'Energie';
-    case 'endurance':
-      return 'Endurance';
-    case 'strength':
-      return 'Force';
-    case 'speed':
-      return 'Vitesse';
-    case 'intensity':
-      return 'Intensité';
-    default:
-      return '';
-  }
-};
+import { usePerformances } from '../../service/usePerformance';
 
 const UserPerformanceContainer = styled.div`
   background-color: #282d30;
@@ -35,26 +17,15 @@ const UserPerformanceContainer = styled.div`
 
 function UserPerformance() {
   const params = useParams();
-  const [performances, setPerformances] = useState();
+  const [userPerformances, setUserPerformances] = useState();
 
-  const { data, error, isLoading } = useApi({
-    method: 'GET',
-    url: `/${params.id}/performance`,
-  });
+  const { performances, isLoading } = usePerformances(params.id);
 
   useEffect(() => {
-    if (data) {
-      setPerformances(data.data);
+    if (performances) {
+      setUserPerformances(performances);
     }
-  }, [data]);
-
-  const formatData = (userPerformance) => {
-    return userPerformance.data.map((item) => ({
-      subject: translateKind(userPerformance.kind[item.kind]),
-      value: item.value,
-      fullMark: 210,
-    }));
-  };
+  }, [performances]);
 
   function customTick({ payload, x, y, stroke, textAnchor, radius }) {
     return (
@@ -75,11 +46,11 @@ function UserPerformance() {
 
   return (
     <UserPerformanceContainer>
-      {!isLoading && performances && (
+      {!isLoading && userPerformances && (
         <RadarChart
           width={258}
           height={263}
-          data={formatData(performances)}
+          data={userPerformances}
           margin={{ top: 10, right: 24, bottom: 10, left: 24 }}
           startAngle={30}
           endAngle={390}
