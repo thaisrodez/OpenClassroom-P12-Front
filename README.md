@@ -39,7 +39,6 @@ git clone git@github.com:OpenClassrooms-Student-Center/P9-front-end-dashboard.gi
 
 ### 2.1 Prerequisites
 
-- [NodeJS](https://nodejs.org/en/)
 - [Npm](https://www.npmjs.com/)
 
 ### 2.2 Launching the project
