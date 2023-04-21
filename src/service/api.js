@@ -20,7 +20,6 @@ export const useApi = (axiosParams) => {
       setData(response.data);
     } catch (error) {
       setError(error);
-      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }

@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { useApi } from '../../service/api';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useActivity } from '../../service/useActivity';
 
 const BarChartBackground = styled.div`
   background-color: #fbfbfb;
@@ -40,23 +41,13 @@ function DailyActivities() {
   const params = useParams();
   const [sessions, setSessions] = useState([]);
 
-  const { data, error, isLoading } = useApi({
-    method: 'GET',
-    url: `/${params.id}/activity`,
-  });
+  const { activity, isLoading } = useActivity(params.id);
 
   useEffect(() => {
-    if (data) {
-      setSessions(data.data.sessions);
+    if (activity) {
+      setSessions(activity);
     }
-  }, [data]);
-
-  const formatSessions = (sessions) => {
-    return sessions.map((session) => ({
-      ...session,
-      day: session.day.substring(session.day.length - 1),
-    }));
-  };
+  }, [activity]);
 
   const customTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -83,7 +74,7 @@ function DailyActivities() {
     <BarChartBackground>
       <h4>Activité quotidienne</h4>
       {!isLoading && sessions && (
-        <BarChart width={750} height={220} data={formatSessions(sessions)}>
+        <BarChart width={750} height={220} data={sessions}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis dataKey="day" tickLine={false} />
           <YAxis
